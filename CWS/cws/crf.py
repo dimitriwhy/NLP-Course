@@ -38,7 +38,7 @@ class CRF(object) :
                 self.alpha_tag[alpha_tag_list[i]] += 1
                 if (i != len(alpha_tag_list) - 1) :
                     self.tag_ntag[(alpha_tag_list[i][0],alpha_tag_list[i][1],alpha_tag_list[i + 1][1])] += 1
-                    self.alpha_tag_nalpha[(alpha_tag_list[i][0],alpha_tag_list[i][1],alpha_tag_list[i + 1][0])] += 1 ##!!!!
+                    self.alpha_tag_nalpha[(alpha_tag_list[i][0],alpha_tag_list[i][1],alpha_tag_list[i + 1][1])] += 1 ##!!!!
                 if (i != 0) :
                     self.alpha_tag_palpha[(alpha_tag_list[i][0],alpha_tag_list[i][1],alpha_tag_list[i - 1][1])] += 1 ##!!!!
 
@@ -77,9 +77,9 @@ def viterbi(crf,sentence) :
             for j, tag in enumerate(postags) :
                 best, best_t = -1e20, -1
                 for k,ptag in enumerate(postags) :
-                    nowp = score[i - 1][k] + crf.emit(alpha,tag) + crf.trans(ptag,tag) + 2.5 * crf.palpha_tag(alpha,tag,ptag) ;
-                    if i != len(sentence) - 1:
-                        nowp += 0.75 * crf.nalpha_tag(alpha,tag,sentence[i + 1])
+                    nowp = score[i - 1][k] + crf.emit(alpha,tag) + crf.trans(ptag,tag) + 2 * crf.palpha_tag(alpha,tag,ptag) ;
+                #    if i != len(sentence) - 1:
+                 #       nowp += 1.5 * crf.nalpha_tag(alpha,tag,sentence[i + 1])
                     if nowp > best :
                         best = nowp
                         best_t = k
